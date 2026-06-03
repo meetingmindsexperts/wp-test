@@ -119,6 +119,23 @@ FTP can't create a MySQL database — that step always needs cPanel (or the host
 
 ## 6. cPanel / HostGator gotchas
 
+- **"Error establishing a database connection" after a fresh install is almost
+  always a missing DB grant, not a bad password.** In cPanel a MySQL *user* and
+  *database* are separate; creating both is not enough — you must **"Add User To
+  Database" with ALL PRIVILEGES**. Symptom: MySQL **error 1044** "Access denied
+  for user '…'@'localhost' **to database** '…'" (auth succeeds, DB open fails).
+  Contrast **1045** = wrong user/password, **1049** = unknown database,
+  **2002** = wrong host/can't connect.
+- **Diagnose DB errors with a self-deleting probe** (the CI runner can't reach the
+  server's `localhost` MySQL, so test on the server over HTTP). Upload a one-file
+  PHP script to the web root that token-parses the live `wp-config.php` for the
+  `DB_*` constants, attempts `mysqli_connect($h,$u,$p,$d)`, prints
+  `mysqli_connect_errno()`/`error()` (and the password *length*, never the value),
+  then `@unlink(__FILE__)` so it removes itself after one request. Use a random
+  filename and a separate FTP `state-name`.
+- **`wp-config.php` reflects exactly what the secret holds.** A value like
+  `define('DB_PASSWORD','#')` means the secret literally is `#` — the generator
+  isn't truncating. (Note users may redact secrets when pasting to you.)
 - **Parent `.htaccess` cascades to subdomains.** A redirect in
   `public_html/.htaccess` applies to `public_html/sub.domain.com/` too (subdomain
   docroots sit *inside* `public_html`), causing redirect loops on subdomains.
