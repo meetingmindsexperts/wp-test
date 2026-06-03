@@ -1,0 +1,73 @@
+name: Install WordPress core on dev (one-time, manual)
+
+# Run manually (Actions tab → this workflow → "Run workflow") AFTER you have:
+#   1) created a MySQL database + user in cPanel (user added to the DB, ALL privileges)
+#   2) added repo secrets: DB_NAME, DB_USER, DB_PASSWORD, DB_HOST (host is usually "localhost")
+#
+# It downloads WordPress core, writes wp-config.php from those secrets (fresh
+# salts, URL pinned to https://dev.omanishc.com) + a standard .htaccess, and
+# uploads everything to the dev FTP root. Then finish at:
+#   https://dev.omanishc.com/wp-admin/install.php
+#
+# It does NOT touch your theme (deployed separately) — core has no oshc-2026.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ftp-deploy        # share the lock with the theme deploy so they never overlap
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (for tools/gen-wp-config.php)
+        uses: actions/checkout@v4
+
+      - name: Download WordPress core
+        run: |
+          curl -fsSL https://wordpress.org/latest.tar.gz -o /tmp/wp.tar.gz
+          tar -xzf /tmp/wp.tar.gz       # extracts ./wordpress
+          echo "Core files: $(find wordpress -type f | wc -l)"
+
+      - name: Generate wp-config.php
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+        run: php tools/gen-wp-config.php wordpress
+
+      - name: Add standard WordPress .htaccess for dev
+        run: |
+          cat > wordpress/.htaccess <<'HTACCESS'
+          # BEGIN WordPress
+          <IfModule mod_rewrite.c>
+          RewriteEngine On
+          RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+          RewriteBase /
+          RewriteRule ^index\.php$ - [L]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule . /index.php [L]
+          </IfModule>
+          # END WordPress
+          HTACCESS
+
+      - name: Upload WordPress core to dev root via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./wordpress/
+          server-dir: /
+          state-name: .ftp-deploy-core-state.json   # separate state from the theme deploy
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
