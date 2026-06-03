@@ -1,0 +1,14 @@
+/*
+Theme Name: OSHC 2026
+Theme URI: https://dev.omanishc.com
+Description: Custom one-page conference theme for the 8th Omani Society of Hematology Conference (OSHC 2026), Muscat, Oman. Content (faculty, committee, important dates, pricing, gallery, FAQ and all section text) is editable by non-developers via Custom Post Types and Advanced Custom Fields. Requires the free "Advanced Custom Fields" plugin.
+Author: MeetingMinds
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+Text Domain: oshc
+*/
+
+/* All visual styles live in assets/css/main.css (enqueued in functions.php).
+   This file only carries the WordPress theme header. */

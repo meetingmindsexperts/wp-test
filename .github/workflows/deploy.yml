@@ -1,0 +1,47 @@
+name: Deploy theme to dev.omanishc.com (FTPS)
+
+# Pushes the OSHC 2026 theme to HostGator over FTPS whenever the theme changes
+# on main. First run uploads everything; later runs sync only changed files
+# (state is tracked in .ftp-deploy-sync-state.json on the server).
+#
+# Requires three repository secrets: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD.
+# The FTP account is rooted at the WordPress site root (public_html/dev.omanishc.com),
+# so server-dir below is relative to that root.
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'wp-content/themes/oshc-2026/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ftp-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy theme over FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          # Only the theme is uploaded …
+          local-dir: ./wp-content/themes/oshc-2026/
+          # … into the themes folder under the FTP root (the site root).
+          server-dir: /wp-content/themes/oshc-2026/
+          # Never touch WP core/config or unrelated files.
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
+            **/node_modules/**

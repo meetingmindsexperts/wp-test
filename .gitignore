@@ -1,0 +1,17 @@
+# Node / wp-env
+node_modules/
+.wp-env.override.json
+
+# Local dev artifacts
+*.log
+.DS_Store
+
+# FTP deploy sync state (lives on the server, never commit)
+.ftp-deploy-sync-state.json
+
+# Reference assets (not part of the theme)
+/_reference/
+
+# Playwright MCP artifacts
+.playwright-mcp/
+/*.png

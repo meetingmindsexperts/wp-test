@@ -1,0 +1,14 @@
+{
+  "name": "oshc-2026-wp",
+  "private": true,
+  "description": "OSHC 2026 conference website — custom WordPress theme",
+  "scripts": {
+    "start": "wp-env start",
+    "stop": "wp-env stop",
+    "clean": "wp-env clean all",
+    "cli": "wp-env run cli wp"
+  },
+  "devDependencies": {
+    "@wordpress/env": "^10.0.0"
+  }
+}
