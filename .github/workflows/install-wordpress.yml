@@ -33,10 +33,10 @@ jobs:
 
       - name: Generate wp-config.php
         env:
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: om4n1586d0t_dev
+          DB_USER: om4n1586d0t_dev_user
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_HOST: localhost
         run: php tools/gen-wp-config.php wordpress
 
       - name: Add standard WordPress .htaccess for dev
