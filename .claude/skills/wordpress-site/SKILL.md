@@ -133,6 +133,13 @@ FTP can't create a MySQL database — that step always needs cPanel (or the host
   `mysqli_connect_errno()`/`error()` (and the password *length*, never the value),
   then `@unlink(__FILE__)` so it removes itself after one request. Use a random
   filename and a separate FTP `state-name`.
+- **Switching PHP versions in cPanel resets the enabled extension set.** After
+  changing a domain's PHP version (e.g. 7.4 → 8.3 via MultiPHP Manager), WordPress
+  may report *"missing the MySQL extension … mysqli."* Fix in cPanel → **Select PHP
+  Version → Extensions**: enable `mysqli`, `mysqlnd`, `pdo_mysql` for the new
+  version (on a dedicated server: WHM → EasyApache 4 → `ea-php83-php-mysqlnd` →
+  Provision). Note `AddHandler application/x-httpd-ea-phpNN .php` lines in
+  `.htaccess` pin a domain's PHP version and cascade to subdomains.
 - **`wp-config.php` reflects exactly what the secret holds.** A value like
   `define('DB_PASSWORD','#')` means the secret literally is `#` — the generator
   isn't truncating. (Note users may redact secrets when pasting to you.)
