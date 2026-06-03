@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OSHC_VERSION', '1.0.0' );
+define( 'OSHC_VERSION', '1.0.1' );
 define( 'OSHC_DIR', get_template_directory() );
 define( 'OSHC_URI', get_template_directory_uri() );
 
