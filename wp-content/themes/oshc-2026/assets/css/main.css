@@ -109,19 +109,26 @@ h1, h2, h3, h4, h5 { font-family: var(--oshc-font-head); color: var(--oshc-blue)
 .oshc-navtoggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .oshc-navtoggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero (light skyline, left-aligned navy text) ---------- */
 .oshc-hero {
-	position: relative; color: #fff; text-align: center;
-	padding: clamp(70px, 12vw, 150px) 0;
-	background-image: linear-gradient(135deg, rgba(43,57,144,.94), rgba(120,29,33,.92));
-	background-size: cover; background-position: center;
+	position: relative;
+	padding: clamp(56px, 9vw, 120px) 0;
+	background-size: cover; background-position: right center; background-repeat: no-repeat;
+	overflow: hidden;
 }
-.oshc-hero__inner { position: relative; max-width: 920px; margin: 0 auto; }
-.oshc-hero__sub { text-transform: uppercase; letter-spacing: .18em; font-weight: 700; font-size: 14px; margin: 0 0 14px; opacity: .9; }
-.oshc-hero__title { color: #fff; font-size: clamp(34px, 6vw, 62px); font-weight: 800; margin: 0 0 18px; }
-.oshc-hero__date { font-family: var(--oshc-font-head); font-weight: 600; font-size: clamp(16px, 2.2vw, 20px); margin: 0 0 22px; }
-.oshc-hero__intro { font-size: 18px; opacity: .95; max-width: 760px; margin: 0 auto 32px; }
-.oshc-hero__actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+/* White scrim on the left so navy text stays readable over the skyline. */
+.oshc-hero__scrim {
+	position: absolute; inset: 0;
+	background: linear-gradient(90deg, rgba(255,255,255,.94) 0%, rgba(255,255,255,.72) 38%, rgba(255,255,255,.15) 66%, rgba(255,255,255,0) 85%);
+}
+.oshc-hero__inner { position: relative; }
+.oshc-hero__content { max-width: 620px; }
+.oshc-hero__eyebrow { font-family: var(--oshc-font-head); font-weight: 600; font-size: 15px; color: var(--oshc-ink); margin: 0 0 4px; }
+.oshc-hero__eyebrow--date { color: var(--oshc-muted); margin-bottom: 18px; }
+.oshc-hero__title { color: var(--oshc-blue); font-size: clamp(32px, 5.2vw, 56px); font-weight: 800; margin: 0 0 18px; line-height: 1.12; }
+.oshc-hero__intro { font-size: 18px; color: #2a2f3a; max-width: 520px; margin: 0 0 28px; }
+.oshc-hero__partners { max-width: 360px; }
+.oshc-hero__partners img { width: 100%; height: auto; }
 
 /* ---------- Stats ---------- */
 .oshc-stats { background: var(--oshc-blue); color: #fff; }

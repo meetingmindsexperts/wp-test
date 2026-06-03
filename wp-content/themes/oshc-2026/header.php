@@ -10,14 +10,13 @@ $oshc_banner_url = oshc_field( 'banner_url', '#register' );
 $oshc_reg_url   = oshc_field( 'register_url', 'https://meetingminds.eventsair.com/oshc2026/register-online' );
 
 $oshc_nav = array(
-	'#welcome'   => __( 'Welcome', 'oshc' ),
-	'#committee' => __( 'Committee', 'oshc' ),
-	'#dates'     => __( 'Dates', 'oshc' ),
-	'#program'   => __( 'Program', 'oshc' ),
-	'#faculty'   => __( 'Faculty', 'oshc' ),
-	'#venue'     => __( 'Venue', 'oshc' ),
-	'#faq'       => __( 'FAQ', 'oshc' ),
-	'#contact'   => __( 'Contact', 'oshc' ),
+	'#committee'    => __( 'Committee', 'oshc' ),
+	'#program'      => __( 'Program', 'oshc' ),
+	'#abstracts'    => __( 'Abstract', 'oshc' ),
+	'#sponsorship'  => __( 'Sponsor', 'oshc' ),
+	'#gallery'      => __( 'Gallery', 'oshc' ),
+	'#venue'        => __( 'Venue', 'oshc' ),
+	'#contact'      => __( 'Contact', 'oshc' ),
 );
 ?>
 <!doctype html>
